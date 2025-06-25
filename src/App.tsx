@@ -1,25 +1,25 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ScrollToTop from './components/ScrollToTop';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import Home from './pages/Home';
+import Destinations from './pages/Destinations';
+import Trips from './pages/Trips';
+import Profile from './pages/Profile';
+import Login from './pages/Login';
+import MainLayout from './layouts/MainLayout';
 
-const App = () => {
+function App() {
   return (
     <Router>
-      <ScrollToTop />
-
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow md:pl-20">
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/destinations" element={<Destinations />} />
+          <Route path="/trips" element={<Trips />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </MainLayout>
     </Router>
   );
-};
+}
 
 export default App;

@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   FiHome,
-  FiMenu,
-  FiX,
-  FiSettings,
+  FiMap,
+  FiBriefcase,
   FiUser,
-  FiGrid
+  FiLogIn,
+  FiMenu,
+  FiX
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
@@ -14,9 +15,10 @@ import '../index.css';
 
 const navLinks = [
   { to: '/', label: 'Home', icon: <FiHome /> },
-  { to: '/dashboard', label: 'Dashboard', icon: <FiGrid /> },
+  { to: '/destinations', label: 'Destinations', icon: <FiMap /> },
+  { to: '/trips', label: 'Trips', icon: <FiBriefcase /> },
   { to: '/profile', label: 'Profile', icon: <FiUser /> },
-  { to: '/settings', label: 'Settings', icon: <FiSettings /> },
+  { to: '/login', label: 'Login', icon: <FiLogIn /> },
 ];
 
 const Navbar = () => {
@@ -28,7 +30,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <div className="flex items-center space-x-4">
           <Link to="/" className="text-xl font-bold text-accent">
-            MyApp
+            Travel Buddy
           </Link>
 
           <nav className="hidden md:flex space-x-6">
