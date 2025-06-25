@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #ffffff;
+    --bg-gradient: linear-gradient(to bottom right, #f0fdfa, #ccfbf1);
+    --surface: #f9fafb;
+    --text: #1e293b;
+    --heading: #0f172a;
+    --subtext: #64748b;
+    --border: #e2e8f0;
+    --accent: #0d9488;
+    --accent-hover: #0f766e;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+  }
+
+  .dark {
+    --bg: #0f172a;
+    --bg-gradient: linear-gradient(to bottom right, #0f172a, #164e63);
+    --surface: #1e293b;
+    --text: #e2e8f0;
+    --heading: #f8fafc;
+    --subtext: #94a3b8;
+    --border: #334155;
+    --accent: #14b8a6;
+    --accent-hover: #2dd4bf;
+    --success: #22c55e;
+    --warning: #eab308;
+    --error: #f87171;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: var(--bg);
+    background-image: var(--bg-gradient);
+    color: var(--text);
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: inherit;
+  }
+
+  a:hover {
+    color: var(--accent-hover);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--subtext);
+    opacity: 1;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .bg-theme {
+    background-color: var(--bg);
+  }
+
+  .bg-gradient-theme {
+    background-image: var(--bg-gradient);
+  }
+
+  .text-theme {
+    color: var(--text);
+  }
+
+  .text-heading {
+    color: var(--heading);
+  }
+
+  .text-subtext {
+    color: var(--subtext);
+  }
+
+  .border-theme {
+    border-color: var(--border);
+  }
+
+  .text-accent {
+    color: var(--accent);
+  }
+
+  .hover-accent:hover {
+    color: var(--accent-hover);
+  }
+
+  .bg-surface {
+    background-color: var(--surface);
+  }
+}
