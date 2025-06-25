@@ -1,32 +1,12 @@
-import { useEffect, useState } from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
+import { useTheme } from '../contexts/ThemeContext';
 
 const ThemeToggle = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved === 'light' || saved === 'dark') return saved;
-
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
-    }
-    return 'light';
-  });
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [theme]);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      onClick={toggleTheme}
       aria-label="Toggle dark mode"
       className="relative w-16 h-8 flex items-center rounded-full p-1 transition-all duration-300 border-2 border-accent"
     >
