@@ -6,9 +6,11 @@ import { AuthProvider } from './AuthContext';
 export const AppProviders = ({ children }: { children: ReactNode }) => {
   return (
     <ThemeProvider>
-      <TripsProvider>
-        <AuthProvider>{children}</AuthProvider>
-      </TripsProvider>
+      <AuthProvider>
+        <TripsProvider>
+          {children}
+        </TripsProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 };
