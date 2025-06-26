@@ -9,6 +9,7 @@ function Destinations() {
         {mockDestinations.map((dest) => (
           <DestinationCard
             key={dest.id}
+            id={dest.id}
             name={dest.name}
             description={dest.description}
             image={dest.image}
