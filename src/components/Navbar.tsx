@@ -31,7 +31,7 @@ const Navbar = () => {
   const authLinks = user
     ? [
         {
-          label: `Logout`,
+          label: 'Logout',
           icon: <FiLogOut />,
           action: () => logout(),
         },
@@ -66,7 +66,9 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          {user && <span className="text-sm text-subtext hidden md:block">Hi, {user}</span>}
+          {user?.email && (
+            <span className="text-sm text-subtext hidden md:block">Hi, {user.email}</span>
+          )}
 
           <nav className="hidden md:flex items-center space-x-4">
             {authLinks.map((link) =>
