@@ -4,6 +4,7 @@ import Destinations from './pages/Destinations';
 import Trips from './pages/Trips';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import MainLayout from './layouts/MainLayout';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/trips" element={<Trips />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </MainLayout>
     </Router>
