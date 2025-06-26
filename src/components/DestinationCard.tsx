@@ -3,17 +3,15 @@ import toast from 'react-hot-toast';
 import { useTrips } from '../contexts/TripsContext';
 import { Trip } from '../api/trips';
 
-const DestinationCard = ({ name, description, image }: Omit<Trip, 'id'>) => {
+const DestinationCard = ({
+  name,
+  description,
+  image,
+}: Omit<Trip, 'id' | 'userId'>) => {
   const { addTrip } = useTrips();
 
   const handleAdd = () => {
-    const trip: Trip = {
-      id: `${name}-${image}`,
-      name,
-      description,
-      image,
-    };
-    addTrip(trip);
+    addTrip({ name, description, image });
     toast.success(`${name} added to your trip!`);
   };
 

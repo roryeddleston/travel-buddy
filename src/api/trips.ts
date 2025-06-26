@@ -1,22 +1,35 @@
-import { http } from './http';
+import { db } from './firebase';
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
 
 export interface Trip {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   image: string;
+  userId: string;
 }
 
-let mockTrips: Trip[] = []; // local memory mock
-
-// GET /trips
-export const getTrips = (): Promise<Trip[]> => {
-  return Promise.resolve(mockTrips);
+export const saveTrip = async (trip: Trip) => {
+  await addDoc(collection(db, 'trips'), trip);
 };
 
-// POST /trips
-export const addTrip = (trip: Trip): Promise<Trip> => {
-  const exists = mockTrips.some((t) => t.id === trip.id);
-  if (!exists) mockTrips.push(trip);
-  return Promise.resolve(trip);
+export const fetchTrips = async (userId: string): Promise<Trip[]> => {
+  const q = query(collection(db, 'trips'), where('userId', '==', userId));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  } as Trip));
+};
+
+export const deleteTrip = async (id: string) => {
+  await deleteDoc(doc(db, 'trips', id));
 };
