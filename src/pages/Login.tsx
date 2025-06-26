@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,7 +8,12 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-  const { login } = useAuth();
+  const { user, login } = useAuth();
+  const navigate = useNavigate();
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +25,7 @@ function Login() {
 
     login(email);
     toast.success(`Logged in as ${email}`);
+    navigate('/');
   };
 
   return (

@@ -7,11 +7,13 @@ import {
   FiUser,
   FiLogIn,
   FiUserPlus,
+  FiLogOut,
   FiMenu,
   FiX
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
+import { useAuth } from '../contexts/AuthContext';
 import '../index.css';
 
 const navLinks = [
@@ -19,13 +21,25 @@ const navLinks = [
   { to: '/destinations', label: 'Destinations', icon: <FiMap /> },
   { to: '/trips', label: 'Trips', icon: <FiBriefcase /> },
   { to: '/profile', label: 'Profile', icon: <FiUser /> },
-  { to: '/login', label: 'Login', icon: <FiLogIn /> },
-  { to: '/signup', label: 'Sign Up', icon: <FiUserPlus /> },
 ];
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, logout } = useAuth();
+
+  const authLinks = user
+    ? [
+        {
+          label: `Logout`,
+          icon: <FiLogOut />,
+          action: () => logout(),
+        },
+      ]
+    : [
+        { to: '/login', label: 'Login', icon: <FiLogIn /> },
+        { to: '/signup', label: 'Sign Up', icon: <FiUserPlus /> },
+      ];
 
   return (
     <header className="w-full bg-surface border-b border-border shadow-sm fixed top-0 left-0 z-50">
@@ -52,7 +66,34 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
+          {user && <span className="text-sm text-subtext hidden md:block">Hi, {user}</span>}
+
+          <nav className="hidden md:flex items-center space-x-4">
+            {authLinks.map((link) =>
+              link.to ? (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="text-subtext hover:text-accent transition-colors flex items-center space-x-1"
+                >
+                  {link.icon}
+                  <span>{link.label}</span>
+                </Link>
+              ) : (
+                <button
+                  key="logout"
+                  onClick={link.action}
+                  className="text-subtext hover:text-accent transition-colors flex items-center space-x-1"
+                >
+                  {link.icon}
+                  <span>{link.label}</span>
+                </button>
+              )
+            )}
+          </nav>
+
           <ThemeToggle />
+
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 rounded-md text-accent focus:outline-none"
@@ -86,6 +127,32 @@ const Navbar = () => {
                   <span>{link.label}</span>
                 </Link>
               ))}
+
+              {authLinks.map((link) =>
+                link.to ? (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center space-x-2 py-2 text-subtext hover:text-accent transition-colors"
+                  >
+                    {link.icon}
+                    <span>{link.label}</span>
+                  </Link>
+                ) : (
+                  <button
+                    key="logout-mobile"
+                    onClick={() => {
+                      link.action?.();
+                      setMobileOpen(false);
+                    }}
+                    className="flex items-center space-x-2 py-2 text-subtext hover:text-accent transition-colors"
+                  >
+                    {link.icon}
+                    <span>{link.label}</span>
+                  </button>
+                )
+              )}
             </nav>
           </motion.div>
         )}
