@@ -1,14 +1,8 @@
-import { useEffect, useState } from 'react';
-import { getTrips, Trip } from '../api/trips';
+import { FiTrash2 } from 'react-icons/fi';
+import { useTrips } from '../contexts/TripsContext';
 
 function Trips() {
-  const [trips, setTrips] = useState<Trip[]>([]);
-
-  useEffect(() => {
-    getTrips()
-      .then(setTrips)
-      .catch((err) => console.error('Failed to load trips:', err));
-  }, []);
+  const { trips, deleteTrip } = useTrips();
 
   return (
     <div className="pt-20 px-4 max-w-7xl mx-auto">
@@ -20,7 +14,7 @@ function Trips() {
           {trips.map((trip) => (
             <div
               key={trip.id}
-              className="bg-surface rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg"
+              className="relative bg-surface rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg"
             >
               <img
                 src={trip.image}
@@ -28,12 +22,15 @@ function Trips() {
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-accent">
-                  {trip.name}
-                </h3>
-                <p className="text-subtext text-sm mt-2">
-                  {trip.description}
-                </p>
+                <h3 className="text-lg font-semibold text-accent">{trip.name}</h3>
+                <p className="text-subtext text-sm mt-2">{trip.description}</p>
+                <button
+                  onClick={() => deleteTrip(trip.id)}
+                  className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                  aria-label="Delete trip"
+                >
+                  <FiTrash2 size={18} />
+                </button>
               </div>
             </div>
           ))}

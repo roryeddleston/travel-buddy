@@ -1,34 +1,55 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { Trip, getTrips as fetchTrips, addTrip as saveTrip } from '../api/trips';
+import { useAuth } from './AuthContext';
+import { Trip, fetchTrips, saveTrip, deleteTrip as apiDeleteTrip } from '../api/trips';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../api/firebase';
 
 interface TripsContextType {
   trips: Trip[];
-  addTrip: (trip: Trip) => void;
+  addTrip: (trip: Omit<Trip, 'userId' | 'id'>) => void;
+  deleteTrip: (id: string) => void;
 }
 
 const TripsContext = createContext<TripsContextType | undefined>(undefined);
 
 export const TripsProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
   const [trips, setTrips] = useState<Trip[]>([]);
 
-  // Load trips from API on mount
   useEffect(() => {
-    fetchTrips()
-      .then(setTrips)
-      .catch((err) => console.error('Failed to load trips:', err));
-  }, []);
+    const loadTrips = async () => {
+      if (user?.uid) {
+        try {
+          const userTrips = await fetchTrips(user.uid);
+          setTrips(userTrips);
+        } catch (err) {
+          console.error('Failed to load trips:', err);
+        }
+      } else {
+        setTrips([]);
+      }
+    };
 
-  const addTrip = (trip: Trip) => {
-    const exists = trips.some((t) => t.id === trip.id);
-    if (exists) return;
+    loadTrips();
+  }, [user]);
 
-    saveTrip(trip)
-      .then((savedTrip) => setTrips((prev) => [...prev, savedTrip]))
-      .catch((err) => console.error('Failed to add trip:', err));
+  const addTrip = async (trip: Omit<Trip, 'userId' | 'id'>) => {
+    if (!user?.uid) return;
+    const docRef = await addDoc(collection(db, 'trips'), {
+      ...trip,
+      userId: user.uid,
+    });
+    const newTrip: Trip = { ...trip, userId: user.uid, id: docRef.id };
+    setTrips((prev) => [...prev, newTrip]);
+  };
+
+  const deleteTrip = async (id: string) => {
+    await apiDeleteTrip(id);
+    setTrips((prev) => prev.filter((trip) => trip.id !== id));
   };
 
   return (
-    <TripsContext.Provider value={{ trips, addTrip }}>
+    <TripsContext.Provider value={{ trips, addTrip, deleteTrip }}>
       {children}
     </TripsContext.Provider>
   );
@@ -36,6 +57,6 @@ export const TripsProvider = ({ children }: { children: ReactNode }) => {
 
 export const useTrips = () => {
   const context = useContext(TripsContext);
-  if (!context) throw new Error('useTrips must be used within a TripsProvider');
+  if (!context) throw new Error('useTrips must be used within TripsProvider');
   return context;
 };
