@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -16,8 +19,13 @@ function Signup() {
       return;
     }
 
-    // Simulate API response
-    toast.success(`Signed up as ${email}`);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast.success('Account created!');
+      navigate('/'); // redirect to home
+    } catch (err: any) {
+      toast.error(err.message || 'Signup failed.');
+    }
   };
 
   return (
