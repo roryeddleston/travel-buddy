@@ -6,6 +6,7 @@ import {
   FiBriefcase,
   FiUser,
   FiLogIn,
+  FiUserPlus,
   FiMenu,
   FiX
 } from 'react-icons/fi';
@@ -19,6 +20,7 @@ const navLinks = [
   { to: '/trips', label: 'Trips', icon: <FiBriefcase /> },
   { to: '/profile', label: 'Profile', icon: <FiUser /> },
   { to: '/login', label: 'Login', icon: <FiLogIn /> },
+  { to: '/signup', label: 'Sign Up', icon: <FiUserPlus /> },
 ];
 
 const Navbar = () => {
