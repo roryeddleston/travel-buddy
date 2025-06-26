@@ -1,26 +1,19 @@
 import { motion } from 'framer-motion';
-import { useTrips } from '../contexts/TripsContext';
-import { TripItem } from '../contexts/TripsContext';
 import toast from 'react-hot-toast';
+import { useTrips } from '../contexts/TripsContext';
+import { Trip } from '../api/trips';
 
-interface DestinationCardProps {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-}
-
-const DestinationCard = ({ id, name, description, image }: DestinationCardProps) => {
+const DestinationCard = ({ name, description, image }: Omit<Trip, 'id'>) => {
   const { addTrip } = useTrips();
 
   const handleAdd = () => {
-    const item: TripItem = {
-      id,
+    const trip: Trip = {
+      id: `${name}-${image}`,
       name,
       description,
       image,
     };
-    addTrip(item);
+    addTrip(trip);
     toast.success(`${name} added to your trip!`);
   };
 
