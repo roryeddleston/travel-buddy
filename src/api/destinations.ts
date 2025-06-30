@@ -1,39 +1,81 @@
-import { http } from './http';
-
 export interface Destination {
   id: string;
   name: string;
   description: string;
   image: string;
+  photographer: string;
+  profileUrl: string;
 }
 
-const mockDestinations: Destination[] = [
-  {
-    id: '1',
-    name: 'Bali, Indonesia',
-    description: 'Tropical paradise with beautiful beaches and rice terraces.',
-    image: 'https://source.unsplash.com/400x300/?bali',
-  },
-  {
-    id: '2',
-    name: 'Kyoto, Japan',
-    description: 'Historic temples, cherry blossoms, and traditional culture.',
-    image: 'https://source.unsplash.com/400x300/?kyoto',
-  },
-  {
-    id: '3',
-    name: 'Paris, France',
-    description: 'Iconic landmarks, cafes, and romantic atmosphere.',
-    image: 'https://source.unsplash.com/400x300/?paris',
-  },
-  {
-    id: '4',
-    name: 'Cape Town, South Africa',
-    description: 'Mountain views, coastal beauty, and vibrant culture.',
-    image: 'https://source.unsplash.com/400x300/?cape-town',
-  },
-];
+const UNSPLASH_API_URL = 'https://api.unsplash.com/search/photos';
+const API_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY as string;
 
-export const getDestinations = (): Promise<Destination[]> => {
-  return Promise.resolve(mockDestinations);
+/**
+ * Fetches photos for a given travel destination name
+ * from the Unsplash API.
+ */
+async function fetchPhotoForDestination(query: string): Promise<Destination> {
+  const params = new URLSearchParams({
+    query,
+    per_page: '1',
+    orientation: 'landscape',
+  });
+
+  const response = await fetch(`${UNSPLASH_API_URL}?${params}`, {
+    headers: {
+      Authorization: `Client-ID ${API_KEY}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => null);
+    console.error(
+      'Unsplash API error:',
+      response.status,
+      errorData || response.statusText
+    );
+    throw new Error(`Failed to fetch image for ${query}`);
+  }
+
+  const data = await response.json();
+  const photo = data.results[0];
+
+  if (!photo) {
+    throw new Error(`No photo found for query: ${query}`);
+  }
+
+  return {
+    id: photo.id,
+    name: query,
+    description: photo.alt_description || `A beautiful photo from ${query}.`,
+    image: photo.urls.small,
+    photographer: photo.user.name,
+    profileUrl: photo.user.links.html,
+  };
+}
+
+/**
+ * Fetches a list of travel destinations, each with
+ * a real Unsplash image.
+ */
+export const getDestinations = async (): Promise<Destination[]> => {
+  const destinations = ['Bali', 'Kyoto', 'Paris', 'Cape Town'];
+
+  const promises = destinations.map((name) =>
+    fetchPhotoForDestination(name)
+      .catch((error) => {
+        console.error(`Error fetching photo for ${name}:`, error);
+        // Provide a fallback object
+        return {
+          id: `${name}-fallback`,
+          name,
+          description: `No image available for ${name}.`,
+          image: 'https://placehold.co/600x400?text=No+Image',
+          photographer: 'Unknown',
+          profileUrl: '#',
+        };
+      })
+  );
+
+  return Promise.all(promises);
 };
