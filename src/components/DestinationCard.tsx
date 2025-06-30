@@ -30,21 +30,36 @@ const DestinationCard = ({
       <div className="p-4">
         <h3 className="text-lg font-semibold text-accent">{name}</h3>
         <p className="text-subtext text-sm mt-2">{description}</p>
-        <p className="text-xs text-subtext mt-2">
+        <p className="text-muted text-xs mt-1">
           Photo by{' '}
           <a
             href={profileUrl}
             target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-accent"
+            rel="noreferrer"
+            className="text-accent hover:underline"
           >
             {photographer}
-          </a>{' '}
-          on Unsplash
+          </a>
         </p>
         <button
           onClick={handleAdd}
-          className="mt-4 px-4 py-2 text-sm rounded-md bg-accent text-white hover:opacity-90"
+          className="
+            mt-4
+            w-full
+            rounded-md
+            bg-teal-500
+            text-white
+            font-semibold
+            py-2
+            transition
+            duration-300
+            hover:bg-teal-600
+            focus:outline-none
+            focus:ring-2
+            focus:ring-offset-2
+            focus:ring-teal-500
+            active:scale-95
+          "
         >
           Add to Trip
         </button>
