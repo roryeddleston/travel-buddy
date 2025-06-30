@@ -27,6 +27,11 @@ async function fetchPhotoForDestination(query: string): Promise<Destination> {
     },
   });
 
+  if (response.status === 403) {
+    console.error('Unsplash API rate limit reached!');
+    throw new Error('API rate limit exceeded. Try again later.');
+  }
+
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
     console.error(
@@ -44,10 +49,15 @@ async function fetchPhotoForDestination(query: string): Promise<Destination> {
     throw new Error(`No photo found for query: ${query}`);
   }
 
+  const descriptionText =
+    photo.alt_description?.length > 51
+      ? photo.alt_description.slice(0, 51) + '…'
+      : photo.alt_description || `A beautiful photo from ${query}.`;
+
   return {
     id: photo.id,
     name: query,
-    description: photo.alt_description || `A beautiful photo from ${query}.`,
+    description: descriptionText,
     image: photo.urls.small,
     photographer: photo.user.name,
     profileUrl: photo.user.links.html,
@@ -59,23 +69,38 @@ async function fetchPhotoForDestination(query: string): Promise<Destination> {
  * a real Unsplash image.
  */
 export const getDestinations = async (): Promise<Destination[]> => {
-  const destinations = ['Bali', 'Kyoto', 'Paris', 'Cape Town'];
+  const destinations = [
+    'Annapurna Circuit',
+    'Bali',
+    'Caucasus',
+    'Hoi An',
+    'Innsbruck',
+    'Kathmandu',
+    'Kenya',
+    'Lake District',
+    'Kyoto',
+    'Mongolia',
+    'Sarajevo',
+    'Riga',
+  ];
 
   const promises = destinations.map((name) =>
-    fetchPhotoForDestination(name)
-      .catch((error) => {
-        console.error(`Error fetching photo for ${name}:`, error);
-        // Provide a fallback object
-        return {
-          id: `${name}-fallback`,
-          name,
-          description: `No image available for ${name}.`,
-          image: 'https://placehold.co/600x400?text=No+Image',
-          photographer: 'Unknown',
-          profileUrl: '#',
-        };
-      })
+    fetchPhotoForDestination(name).catch((error) => {
+      console.error(`Error fetching photo for ${name}:`, error);
+      // Provide a fallback object
+      return {
+        id: `${name}-fallback`,
+        name,
+        description: `No image available for ${name}.`,
+        image: 'https://placehold.co/600x400?text=No+Image',
+        photographer: 'Unknown',
+        profileUrl: '#',
+      };
+    })
   );
 
-  return Promise.all(promises);
+  const results = await Promise.all(promises);
+
+  // ✅ sort alphabetically
+  return results.sort((a, b) => a.name.localeCompare(b.name));
 };
