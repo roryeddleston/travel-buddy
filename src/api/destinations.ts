@@ -11,6 +11,14 @@ const UNSPLASH_API_URL = 'https://api.unsplash.com/search/photos';
 const API_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY as string;
 
 /**
+ * Capitalizes the first letter of a string
+ */
+function capitalize(text: string): string {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/**
  * Fetches photos for a given travel destination name
  * from the Unsplash API.
  */
@@ -49,10 +57,13 @@ async function fetchPhotoForDestination(query: string): Promise<Destination> {
     throw new Error(`No photo found for query: ${query}`);
   }
 
-  const descriptionText =
+  let descriptionText =
     photo.alt_description?.length > 51
       ? photo.alt_description.slice(0, 51) + '…'
       : photo.alt_description || `A beautiful photo from ${query}.`;
+
+  // ✅ Capitalize first letter
+  descriptionText = capitalize(descriptionText);
 
   return {
     id: photo.id,
@@ -79,9 +90,9 @@ export const getDestinations = async (): Promise<Destination[]> => {
     'Kenya',
     'Lake District',
     'Kyoto',
-    'Mongolia',
     'Sarajevo',
     'Riga',
+    'Vienna'
   ];
 
   const promises = destinations.map((name) =>
