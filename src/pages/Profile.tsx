@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 
 function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUserProfile } = useAuth();
 
   const [editing, setEditing] = useState(false);
   const [displayName, setDisplayName] = useState(user?.displayName || '');
@@ -24,10 +24,18 @@ function Profile() {
     }
   };
 
-  const handleSave = () => {
-    // In real apps, you'd send this data to Firebase updateProfile.
-    toast.success('Profile updated locally!');
-    setEditing(false);
+  const handleSave = async () => {
+    try {
+      await updateUserProfile({
+        displayName,
+        photoURL,
+      });
+      toast.success('Profile updated!');
+      setEditing(false);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to update profile.');
+    }
   };
 
   return (
@@ -61,7 +69,7 @@ function Profile() {
             </p>
             <p className="text-subtext">
               <span className="font-medium text-heading">Name:</span>{' '}
-              {displayName || 'Not set'}
+              {user.displayName || 'Not set'}
             </p>
           </>
         ) : (
