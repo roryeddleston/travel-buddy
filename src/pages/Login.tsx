@@ -15,7 +15,7 @@ function Login() {
     return <Navigate to="/" replace />;
   }
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -23,9 +23,14 @@ function Login() {
       return;
     }
 
-    login(email);
-    toast.success(`Logged in as ${email}`);
-    navigate('/');
+    try {
+      await login(email, password);
+      toast.success(`Logged in as ${email}`);
+      navigate('/');
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || 'Failed to log in.');
+    }
   };
 
   return (
@@ -36,10 +41,12 @@ function Login() {
           <label className="block text-sm mb-1 text-subtext">Email</label>
           <input
             type="email"
+            autoComplete="email"
             className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
+            required
           />
         </div>
         <div>
@@ -47,10 +54,12 @@ function Login() {
           <div className="relative">
             <input
               type={showPass ? 'text' : 'password'}
+              autoComplete="current-password"
               className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              required
             />
             <button
               type="button"
@@ -63,12 +72,15 @@ function Login() {
         </div>
         <button
           type="submit"
-          className="w-full py-2 rounded-md bg-accent text-white hover:opacity-90"
+          className="w-full py-2 rounded-md bg-accent text-white hover:opacity-90 transition"
         >
           Login
         </button>
         <p className="text-sm text-subtext text-center mt-2">
-          Don’t have an account? <a href="/signup" className="text-accent hover:underline">Sign up</a>
+          Don’t have an account?{' '}
+          <a href="/signup" className="text-accent hover:underline">
+            Sign up
+          </a>
         </p>
       </form>
     </div>
