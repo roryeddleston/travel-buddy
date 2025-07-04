@@ -5,13 +5,18 @@ import { useTrips } from '../contexts/TripsContext';
 import { Destination } from '../api/destinations';
 import { fetchWeather, WeatherData } from '../api/weather';
 
+interface DestinationCardProps extends Omit<Destination, 'id'> {
+  showAddButton?: boolean;
+}
+
 const DestinationCard = ({
   name,
   description,
   image,
   photographer,
   profileUrl,
-}: Omit<Destination, 'id'>) => {
+  showAddButton = true,
+}: DestinationCardProps) => {
   const { addTrip } = useTrips();
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(true);
@@ -95,40 +100,44 @@ const DestinationCard = ({
           )}
         </div>
 
-        <p className="text-muted text-xs mt-3">
-          Photo by{' '}
-          <a
-            href={profileUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-accent hover:underline"
-          >
-            {photographer}
-          </a>
-        </p>
+        {photographer && profileUrl && (
+          <p className="text-muted text-xs mt-3">
+            Photo by{' '}
+            <a
+              href={profileUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-accent hover:underline"
+            >
+              {photographer}
+            </a>
+          </p>
+        )}
 
-        <button
-          onClick={handleAdd}
-          className="
-            mt-5
-            w-full
-            rounded-md
-            bg-teal-500
-            text-white
-            font-semibold
-            py-2
-            transition
-            duration-300
-            hover:bg-teal-600
-            focus:outline-none
-            focus:ring-2
-            focus:ring-offset-2
-            focus:ring-teal-500
-            active:scale-95
-          "
-        >
-          Add to Trip
-        </button>
+        {showAddButton && (
+          <button
+            onClick={handleAdd}
+            className="
+              mt-5
+              w-full
+              rounded-md
+              bg-teal-500
+              text-white
+              font-semibold
+              py-2
+              transition
+              duration-300
+              hover:bg-teal-600
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-teal-500
+              active:scale-95
+            "
+          >
+            Add to Trip
+          </button>
+        )}
       </div>
     </motion.div>
   );
