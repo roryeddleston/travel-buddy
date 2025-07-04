@@ -22,7 +22,7 @@ function capitalize(text: string): string {
  * Fetches photos for a given travel destination name
  * from the Unsplash API.
  */
-async function fetchPhotoForDestination(query: string): Promise<Destination> {
+export async function fetchPhotoForDestination(query: string): Promise<Destination> {
   const params = new URLSearchParams({
     query,
     per_page: '1',
