@@ -1,3 +1,5 @@
+// src/api/destinations.ts
+
 export interface Destination {
   id: string;
   name: string;
@@ -11,11 +13,12 @@ const UNSPLASH_API_URL = 'https://api.unsplash.com/search/photos';
 const API_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY as string;
 
 /**
- * Capitalizes the first letter of a string
+ * Capitalises the first letter of a string
  */
-function capitalize(text: string): string {
-  if (!text) return text;
-  return text.charAt(0).toUpperCase() + text.slice(1);
+function capitalize(str: string): string {
+  return str.length > 0
+    ? str.charAt(0).toUpperCase() + str.slice(1)
+    : str;
 }
 
 /**
@@ -62,12 +65,13 @@ export async function fetchPhotoForDestination(query: string): Promise<Destinati
       ? photo.alt_description.slice(0, 51) + '…'
       : photo.alt_description || `A beautiful photo from ${query}.`;
 
-  // ✅ Capitalize first letter
   descriptionText = capitalize(descriptionText);
+
+  const capitalizedName = capitalize(query);
 
   return {
     id: photo.id,
-    name: query,
+    name: capitalizedName,
     description: descriptionText,
     image: photo.urls.small,
     photographer: photo.user.name,
@@ -90,9 +94,9 @@ export const getDestinations = async (): Promise<Destination[]> => {
     'Kenya',
     'Lake District',
     'Kyoto',
+    'Mongolia',
     'Sarajevo',
     'Riga',
-    'Vienna'
   ];
 
   const promises = destinations.map((name) =>
@@ -101,8 +105,8 @@ export const getDestinations = async (): Promise<Destination[]> => {
       // Provide a fallback object
       return {
         id: `${name}-fallback`,
-        name,
-        description: `No image available for ${name}.`,
+        name: capitalize(name),
+        description: `No image available for ${capitalize(name)}.`,
         image: 'https://placehold.co/600x400?text=No+Image',
         photographer: 'Unknown',
         profileUrl: '#',
@@ -112,6 +116,5 @@ export const getDestinations = async (): Promise<Destination[]> => {
 
   const results = await Promise.all(promises);
 
-  // ✅ sort alphabetically
   return results.sort((a, b) => a.name.localeCompare(b.name));
 };
