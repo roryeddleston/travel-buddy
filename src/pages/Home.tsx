@@ -7,7 +7,7 @@ function Home() {
       <div className="flex flex-col justify-center items-center px-8 py-16 text-center bg-surface">
         <div className="max-w-xl">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-accent mb-4">
-            Plan Your Dream Trips
+            Plan your dream trips
           </h1>
           <p className="text-lg text-subtext mb-8">
             Discover destinations and save your favorites for your next adventure. Get inspired with real images from Unsplash.
