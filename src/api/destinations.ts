@@ -85,18 +85,18 @@ export async function fetchPhotoForDestination(query: string): Promise<Destinati
  */
 export const getDestinations = async (): Promise<Destination[]> => {
   const destinations = [
-    'Annapurna Circuit',
+    'Arizona',
     'Bali',
-    'Caucasus',
     'Hoi An',
     'Innsbruck',
     'Kathmandu',
     'Kenya',
     'Lake District',
+    'Pokhara',
     'Kyoto',
-    'Mongolia',
     'Sarajevo',
     'Riga',
+    'Tbilisi',
   ];
 
   const promises = destinations.map((name) =>
