@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { Toaster } from 'react-hot-toast';
-import { AppProviders } from './contexts/AppProviders'; // ✅ Use single wrapper
+import { AppProviders } from './contexts/AppProviders';
 
 const rootElement = document.getElementById('root');
 
