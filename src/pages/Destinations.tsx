@@ -49,8 +49,8 @@ function Destinations() {
   };
 
   return (
-    <div className="pt-30 pb-20 px-4 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold text-accent mb-12">
+    <div className="pt-26 pb-20 px-4 max-w-7xl mx-auto">
+      <h1 className="text-2xl font-bold text-accent mb-8">
         Explore Scenic Views
       </h1>
 
