@@ -39,10 +39,10 @@ function Profile() {
   };
 
   return (
-    <div className="pt-20 px-4 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold text-accent mb-6">My Profile</h1>
+    <div className="pt-26 pb-20 px-4 max-w-7xl mx-auto">
+      <h1 className="text-2xl font-bold text-accent mb-8 text-center">Profile</h1>
 
-      <div className="bg-surface p-6 rounded-2xl shadow space-y-6">
+      <div className="max-w-xl mx-auto bg-surface p-6 rounded-2xl shadow space-y-6 border">
         <div className="flex items-center gap-4">
           <img
             src={
