@@ -22,7 +22,7 @@ function Destinations() {
   }, []);
 
   return (
-    <div className="pt-20 px-4 max-w-7xl mx-auto">
+    <div className="pt-20 pb-20 px-4 max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold text-accent mb-6">
         Explore Scenic Views
       </h1>
