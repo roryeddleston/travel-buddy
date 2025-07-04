@@ -24,7 +24,7 @@ function Home() {
                 h-12
                 border-2
                 border-teal-700
-                text-teal-700
+                text-white
                 font-semibold
                 rounded-lg
                 hover:bg-teal-700
