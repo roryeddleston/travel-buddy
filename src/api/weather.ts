@@ -11,15 +11,17 @@ export async function fetchWeather(city: string): Promise<WeatherData> {
   const url = `${API_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
 
   const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error('Failed to fetch weather');
-  }
-
   const data = await res.json();
 
+  if (!res.ok || data.cod !== 200) {
+    throw new Error(data.message || 'Failed to fetch weather');
+  }
+
   return {
-    temperature: data.main.temp,
-    description: data.weather[0].description,
-    iconUrl: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+    temperature: data.main?.temp ?? 0,
+    description: data.weather?.[0]?.description ?? 'Unavailable',
+    iconUrl: data.weather?.[0]?.icon
+      ? `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+      : '',
   };
 }
