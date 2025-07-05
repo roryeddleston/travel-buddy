@@ -7,7 +7,7 @@ function Trips() {
 
   return (
     <div className="pt-26 pb-20 px-4 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold text-accent mb-8">My Trips</h1>
+      <h1 className="text-3xl font-bold text-accent mb-8">My Trips</h1>
 
       {trips.length === 0 ? (
         <p className="text-subtext">You haven’t added any trips yet.</p>
