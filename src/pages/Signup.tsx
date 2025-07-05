@@ -24,22 +24,25 @@ function Signup() {
       toast.success('Account created!');
       navigate('/'); // redirect to home
     } catch (err: any) {
+      console.error(err);
       toast.error(err.message || 'Signup failed.');
     }
   };
 
   return (
-    <div className="pt-20 px-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-accent mb-6">Sign Up</h1>
+    <div className="pt-26 pb-20 px-4 max-w-md mx-auto">
+      <h1 className="text-3xl font-bold text-accent mb-6 mt-6 text-center">Sign Up</h1>
       <form onSubmit={handleSignup} className="bg-surface p-6 rounded-2xl shadow space-y-4">
         <div>
           <label className="block text-sm mb-1 text-subtext">Email</label>
           <input
             type="email"
+            autoComplete="email"
             className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
+            required
           />
         </div>
         <div>
@@ -47,10 +50,12 @@ function Signup() {
           <div className="relative">
             <input
               type={showPass ? 'text' : 'password'}
+              autoComplete="new-password"
               className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              required
             />
             <button
               type="button"
@@ -63,12 +68,15 @@ function Signup() {
         </div>
         <button
           type="submit"
-          className="w-full py-2 rounded-md bg-accent text-white hover:opacity-90"
+          className="w-full py-2 rounded-md bg-accent text-white hover:opacity-90 transition"
         >
           Sign Up
         </button>
         <p className="text-sm text-subtext text-center mt-2">
-          Already have an account? <Link to="/login" className="text-accent hover:underline">Log in</Link>
+          Already have an account?{' '}
+          <Link to="/login" className="text-accent hover:underline">
+            Log in
+          </Link>
         </p>
       </form>
     </div>
