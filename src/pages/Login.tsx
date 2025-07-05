@@ -34,8 +34,8 @@ function Login() {
   };
 
   return (
-    <div className="pt-20 px-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-accent mb-6">Login</h1>
+    <div className="pt-26 pb-20 px-4 max-w-md mx-auto">
+      <h1 className="text-3xl font-bold text-accent mb-6 mt-6 text-center">Login</h1>
       <form onSubmit={handleLogin} className="bg-surface p-6 rounded-2xl shadow space-y-4">
         <div>
           <label className="block text-sm mb-1 text-subtext">Email</label>
