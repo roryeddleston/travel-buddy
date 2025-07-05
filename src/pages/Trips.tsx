@@ -6,8 +6,8 @@ function Trips() {
   const { trips, deleteTrip } = useTrips();
 
   return (
-    <div className="pt-26 pb-20 px-4 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold text-accent mb-8">My Trips</h1>
+    <div className="pt-26 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold text-accent mt-6 mb-8">My Trips</h1>
 
       {trips.length === 0 ? (
         <p className="text-subtext">You haven’t added any trips yet.</p>

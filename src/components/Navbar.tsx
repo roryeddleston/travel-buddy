@@ -9,7 +9,7 @@ import {
   FiUserPlus,
   FiLogOut,
   FiMenu,
-  FiX
+  FiX,
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
@@ -43,10 +43,13 @@ const Navbar = () => {
 
   return (
     <header className="w-full bg-surface border-b border-border shadow-sm fixed top-0 left-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        <div className="flex items-center space-x-4">
-          <Link to="/" className="text-xl font-bold text-accent">
-            Travel Buddy
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-24">
+        <div className="flex items-center space-x-6">
+          <Link
+            to="/"
+            className="text-3xl font-bold text-accent leading-none"
+          >
+            Travel buddy
           </Link>
 
           <nav className="hidden md:flex space-x-6">
@@ -67,7 +70,9 @@ const Navbar = () => {
 
         <div className="flex items-center space-x-4">
           {user?.email && (
-            <span className="text-sm text-subtext hidden md:block">Hi, {user.email}</span>
+            <span className="text-sm text-subtext hidden md:block">
+              Hi, {user.email}
+            </span>
           )}
 
           <nav className="hidden md:flex items-center space-x-4">
@@ -109,13 +114,19 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="md:hidden bg-surface border-t border-border"
+            className="md:hidden bg-surface border-t border-border overflow-hidden"
             initial={{ height: 0 }}
             animate={{ height: 'auto' }}
             exit={{ height: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
-            <nav className="flex flex-col px-4 py-2 space-y-2">
+            <motion.nav
+              className="flex flex-col px-4 py-2 space-y-2"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -155,7 +166,7 @@ const Navbar = () => {
                   </button>
                 )
               )}
-            </nav>
+            </motion.nav>
           </motion.div>
         )}
       </AnimatePresence>
