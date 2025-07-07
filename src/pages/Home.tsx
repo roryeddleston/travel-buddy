@@ -6,7 +6,7 @@ function Home() {
       {/* Left side content */}
       <div className="flex flex-col justify-center items-center px-8 py-16 text-center bg-surface">
         <div className="max-w-xl">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-accent mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-accent mb-4 mt-[30px] sm:mt-0">
             Plan your dream trips
           </h1>
           <p className="text-lg text-subtext mb-8">
@@ -89,9 +89,8 @@ function Home() {
       <div
         className="hidden md:block bg-cover bg-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/images/home_hero.jpg')`
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/images/home_hero.jpg')`,
         }}
-
       ></div>
     </div>
   );
